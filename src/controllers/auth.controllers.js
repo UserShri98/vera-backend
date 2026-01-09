@@ -31,7 +31,7 @@ const registerController = async (req, res) => {
     password: hashPassword,
   });
 
-  const token = JWT.sign({ user: user._id }, process.env.JWT_SECRET);
+  const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET);
 
   res.cookie("token", token);
 
@@ -66,7 +66,7 @@ const loginController = async (req, res) => {
     });
   }
 
-  const token = JWT.sign({ user: user._id }, process.env.JWT_SECRET);
+  const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET);
 
   res.cookie("token", token);
 

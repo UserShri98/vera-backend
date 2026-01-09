@@ -1,8 +1,9 @@
 const { Server } = require("socket.io");
 const authenticateSocket = require("./middlewares/auth.socket");
 const generateResponse = require("../services/ai.service");
-// socket server
+const messageModel = require("../models/message.model");
 
+// socket server
 const initSocketServer = (httpServer) => {
   const io = new Server(httpServer, {
     /* options */
