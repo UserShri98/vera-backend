@@ -13,7 +13,24 @@ const initSocketServer = (httpServer) => {
 
   io.on("connection", (socket) => {
     socket.on("ai-message", async (data) => {
+      // store user message
+      await messageModel.create({
+        chat: data.chat,
+        user: socket.user._id,
+        content: data.content,
+        role: "user",
+      });
+
+      // generate AI response
       const response = await generateResponse(data.content);
+
+      // store ai response
+      await messageModel.create({
+        chat: data.chat,
+        user: socket.user._id,
+        content: response,
+        role: "model",
+      });
 
       socket.emit("ai-response", {
         chat: data.chat,
