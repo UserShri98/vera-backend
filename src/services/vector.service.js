@@ -17,4 +17,14 @@ const createMemory = async ({ vector, messageId, metadata }) => {
   ]);
 };
 
-module.exports = { createMemory };
+const queryMemory = async ({ quaryVector, limit = 5, metadata }) => {
+  const data = await veraIndex.query({
+    vector: quaryVector,
+    topK: limit,
+    filter: metadata ? metadata : undefined,
+    includeMetadata: true,
+  });
+  return data.matches;
+};
+
+module.exports = { createMemory, queryMemory };

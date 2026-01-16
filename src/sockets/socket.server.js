@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const authenticateSocket = require("./middlewares/auth.socket");
 const { generateResponse, generateVectors } = require("../services/ai.service");
 const messageModel = require("../models/message.model");
-const { createMemory } = require("../services/vector.service");
+const { createMemory, queryMemory } = require("../services/vector.service");
 
 // socket server
 const initSocketServer = (httpServer) => {
@@ -24,6 +24,15 @@ const initSocketServer = (httpServer) => {
 
       // generate vectors
       const vectors = await generateVectors(data.content);
+
+      // query memory
+      const memory = await queryMemory({
+        quaryVector: vectors,
+        limit: 5,
+        metadata: {
+          userId: socket.user._id,
+        },
+      });
 
       // create memory
       await createMemory({
