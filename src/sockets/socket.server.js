@@ -13,6 +13,7 @@ const initSocketServer = (httpServer) => {
 
   io.on("connection", (socket) => {
     socket.on("ai-message", async (data) => {
+      const vectors = await generateVectors(data.content);
       // store user message
       await messageModel.create({
         chat: data.chat,
@@ -22,17 +23,25 @@ const initSocketServer = (httpServer) => {
       });
 
       // fetch chat history
-      const chatHistory = (await messageModel.find({
-        chat: data.chat,
-      }).sort({createdAt: -1}).limit(20).lean()).reverse();
+      const chatHistory = (
+        await messageModel
+          .find({
+            chat: data.chat,
+          })
+          .sort({ createdAt: -1 })
+          .limit(20)
+          .lean()
+      ).reverse();
 
       // generate AI response
-      const response = await generateResponse(chatHistory.map(msg=>{
-        return{
-          role:msg.role,
-          parts:[{text:msg.content}]
-        }
-      }));
+      const response = await generateResponse(
+        chatHistory.map((msg) => {
+          return {
+            role: msg.role,
+            parts: [{ text: msg.content }],
+          };
+        })
+      );
 
       // store ai response
       await messageModel.create({
