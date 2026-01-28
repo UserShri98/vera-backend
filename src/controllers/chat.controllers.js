@@ -15,6 +15,9 @@ const createChatController = async (req, res) => {
   });
 };
 
+const getAllChatsController = async (req, res) => {}
+
 module.exports = {
   createChatController,
+  getAllChatsController
 };
