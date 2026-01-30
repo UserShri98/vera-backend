@@ -7,12 +7,16 @@ const { createMemory, queryMemory } = require("../services/vector.service");
 // socket server
 const initSocketServer = (httpServer) => {
   const io = new Server(httpServer, {
-    /* options */
+    cors:{
+      origin:process.env.VITE_FRONTEND_URL,
+      credentials:true
+    }
   });
 
   io.use(authenticateSocket);
 
   io.on("connection", (socket) => {
+    console.log("Socket Server connected:");
     socket.on("ai-message", async (data) => {
 
       // store user message and generate vectors concurrently
