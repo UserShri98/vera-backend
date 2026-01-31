@@ -1,4 +1,5 @@
 const chatModel = require("../models/chat.model");
+const messageModel = require("../models/message.model");
 
 const createChatController = async (req, res) => {
   const { title } = req.body;
@@ -31,7 +32,19 @@ const getAllChatsController = async (req, res) => {
   });
 };
 
+const getAllMessagesController= async(req,res)=>{
+  const chatId = req.params.id;
+
+  const messages = await messageModel.find({chat:chatId}).sort({createdAt:1});
+
+  res.status(200).json({
+    status: "Messages fetched successfully",
+    messages: messages,
+  })
+}
+
 module.exports = {
   createChatController,
   getAllChatsController,
+  getAllMessagesController
 };
