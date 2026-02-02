@@ -1,7 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const path = require("path");
 
 // importing routes
 const authRoutes = require("./routes/auth.routes");
@@ -15,16 +14,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost::5173",
+    origin: process.env.VITE_FRONTEND_URL,
     credentials: true,
   }),
 );
-app.use(express.static(path.join(__dirname, "../public")));
-
-// Serving frontend
-app.get("*name", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
-});
 
 // Routes
 app.use("/api/auth", authRoutes);
