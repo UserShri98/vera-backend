@@ -16,6 +16,7 @@ const initSocketServer = (httpServer) => {
   ioInstance = new Server(httpServer, {
     cors: {
       origin: process.env.VITE_FRONTEND_URL,
+      methods: ["GET", "POST"],
       credentials: true,
     },
   });

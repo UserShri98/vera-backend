@@ -9,6 +9,7 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const {
   registerController,
   loginController,
+  
   logOutController,
 } = require("../controllers/auth.controllers");
 
