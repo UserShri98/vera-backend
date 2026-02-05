@@ -33,7 +33,11 @@ const registerController = async (req, res) => {
 
   const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET);
 
-  res.cookie("token", token);
+  res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,      // REQUIRED on HTTPS (Render)
+  sameSite: "none",  // REQUIRED for cross-origin
+});
 
   res.status(201).json({
     message: "User Register Successfully",
